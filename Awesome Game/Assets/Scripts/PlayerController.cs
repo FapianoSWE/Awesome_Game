@@ -7,7 +7,7 @@ public enum Gamestates
     alive
 }
 
-[RequireComponent(typeof(Rigidbody2D))]
+
 public class PlayerController : MonoBehaviour {
 
 
@@ -32,6 +32,10 @@ public class PlayerController : MonoBehaviour {
             transform.position = GameObject.Find("Spawn").transform.position;
             rb.velocity = Vector2.zero;
         }
+        if(rb.velocity.y > 0 || rb.velocity.y < 0)
+        {
+            grounded = false;
+        }
     }
     void FixedUpdate()
     {
@@ -42,7 +46,7 @@ public class PlayerController : MonoBehaviour {
     {
         rb.velocity = new Vector2(Input.GetAxis("Horizontal") * speed, rb.velocity.y);
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && grounded)
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpHeight);
         }
@@ -54,6 +58,10 @@ public class PlayerController : MonoBehaviour {
         if(collision.collider.tag == "HostileTerrain")
         {
             gameStates = Gamestates.dead;
+        }
+        if(collision.collider.tag == "Terrain" && rb.velocity.y == 0)
+        {
+            grounded = true;
         }
     }
 
