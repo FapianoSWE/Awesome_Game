@@ -18,13 +18,16 @@ public class PlayerController : MonoBehaviour {
     Rigidbody2D rb;
 
     Gamestates gameStates = new Gamestates();
-    
-	void Start () {
+
+    public GameObject[] currentTeam;
+
+	void Start ()
+    {
         rb = GetComponent<Rigidbody2D>();
 	}
 	
-	void Update () {
-
+	void Update ()
+    {
         currentVelocity = rb.velocity;
 
         if (Input.GetKeyDown(KeyCode.R))
@@ -37,6 +40,7 @@ public class PlayerController : MonoBehaviour {
             grounded = false;
         }
     }
+
     void FixedUpdate()
     {
         Movement();
@@ -50,7 +54,6 @@ public class PlayerController : MonoBehaviour {
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpHeight);
         }
-        
     }
 
     void OnCollisionEnter2D(Collision2D collision)
