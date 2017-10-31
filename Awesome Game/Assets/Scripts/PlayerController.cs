@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour {
     public float speed = 10f;
     public float jumpHeight = 20f;
     public bool grounded = false;
+    public bool turnedRight = true;
     public Vector2 currentVelocity;
     Rigidbody2D rb;
 
@@ -28,7 +29,7 @@ public class PlayerController : MonoBehaviour {
 	
 	void Update ()
     {
-        currentVelocity = rb.velocity;
+
 
         if (Input.GetKeyDown(KeyCode.R))
         {
@@ -38,6 +39,24 @@ public class PlayerController : MonoBehaviour {
         if(rb.velocity.y > 0 || rb.velocity.y < 0)
         {
             grounded = false;
+        }
+        if(rb.velocity.x < 0)
+        {
+            turnedRight = false;
+        }
+        if(rb.velocity.x > 0)
+        {
+            turnedRight = true;
+        }
+        if(turnedRight)
+        {
+            GetComponentInChildren<Transform>().localScale = new Vector3
+                (1, GetComponentInChildren<Transform>().localScale.y, GetComponentInChildren<Transform>().localScale.z);
+        }
+        else if(!turnedRight)
+        {
+            GetComponentInChildren<Transform>().localScale = new Vector3
+                (-1, GetComponentInChildren<Transform>().localScale.y, GetComponentInChildren<Transform>().localScale.z);
         }
     }
 
@@ -50,7 +69,7 @@ public class PlayerController : MonoBehaviour {
     {
         rb.velocity = new Vector2(Input.GetAxis("Horizontal") * speed, rb.velocity.y);
 
-        if (Input.GetKeyDown(KeyCode.Space) && grounded)
+        if (Input.GetKeyDown(KeyCode.UpArrow) && grounded)
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpHeight);
         }
