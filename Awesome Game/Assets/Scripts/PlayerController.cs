@@ -3,8 +3,8 @@ using System.Collections;
 
 public enum Gamestates
 {
-    dead,
-    alive
+    alive,
+    dead
 }
 
 
@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour {
     public float speed = 10f;
     public float jumpHeight = 20f;
     public bool grounded = false;
+    public bool isMoving = false;
     public bool turnedRight = true;
     public Vector2 currentVelocity;
     Rigidbody2D rb;
@@ -43,10 +44,12 @@ public class PlayerController : MonoBehaviour {
         if(rb.velocity.x < 0)
         {
             turnedRight = false;
+            isMoving = true;
         }
         if(rb.velocity.x > 0)
         {
             turnedRight = true;
+            isMoving = true;
         }
         if(turnedRight)
         {
@@ -58,11 +61,19 @@ public class PlayerController : MonoBehaviour {
             GetComponentInChildren<Transform>().localScale = new Vector3
                 (-1, GetComponentInChildren<Transform>().localScale.y, GetComponentInChildren<Transform>().localScale.z);
         }
+        if(rb.velocity.x == 0)
+        {
+            isMoving = false;
+        }
+
     }
 
     void FixedUpdate()
     {
-        Movement();
+        if(gameStates == Gamestates.alive)
+        {
+            Movement();
+        }
     }
 
     void Movement()
