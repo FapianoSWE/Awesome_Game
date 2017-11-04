@@ -3,8 +3,8 @@ using System.Collections;
 
 public enum Gamestates
 {
-    dead,
-    alive
+    alive,
+    dead
 }
 public enum Characters
 {
@@ -24,7 +24,12 @@ public class PlayerController : MonoBehaviour {
     public float jumpHeight = 10f;
     public float angeryJump = 5f;
     public bool grounded = false;
+<<<<<<< HEAD
     public bool canSetJump;
+=======
+    public bool isMoving = false;
+    public bool turnedRight = true;
+>>>>>>> ba760102c2cdc86d6b73a99ed4195fa601b3d2fa
     public Vector2 currentVelocity;
     Rigidbody2D rb;
 
@@ -43,6 +48,7 @@ public class PlayerController : MonoBehaviour {
 	
 	void Update ()
     {
+<<<<<<< HEAD
         if(Input.GetKeyDown(KeyCode.K))
         {
             gameStates = Gamestates.dead;
@@ -52,6 +58,9 @@ public class PlayerController : MonoBehaviour {
             Respawn();
         }
         currentVelocity = rb.velocity;
+=======
+
+>>>>>>> ba760102c2cdc86d6b73a99ed4195fa601b3d2fa
 
         if (Input.GetKeyDown(KeyCode.R))
         {
@@ -62,6 +71,7 @@ public class PlayerController : MonoBehaviour {
         {
             grounded = false;
         }
+<<<<<<< HEAD
         if(characters == Characters.happy)
         {
             if(canSetJump)
@@ -77,11 +87,41 @@ public class PlayerController : MonoBehaviour {
                 AngerySkill();
             }
         }
+=======
+        if(rb.velocity.x < 0)
+        {
+            turnedRight = false;
+            isMoving = true;
+        }
+        if(rb.velocity.x > 0)
+        {
+            turnedRight = true;
+            isMoving = true;
+        }
+        if(turnedRight)
+        {
+            GetComponentInChildren<Transform>().localScale = new Vector3
+                (1, GetComponentInChildren<Transform>().localScale.y, GetComponentInChildren<Transform>().localScale.z);
+        }
+        else if(!turnedRight)
+        {
+            GetComponentInChildren<Transform>().localScale = new Vector3
+                (-1, GetComponentInChildren<Transform>().localScale.y, GetComponentInChildren<Transform>().localScale.z);
+        }
+        if(rb.velocity.x == 0)
+        {
+            isMoving = false;
+        }
+
+>>>>>>> ba760102c2cdc86d6b73a99ed4195fa601b3d2fa
     }
 
     void FixedUpdate()
     {
-        Movement();
+        if(gameStates == Gamestates.alive)
+        {
+            Movement();
+        }
     }
 
     void Movement()
