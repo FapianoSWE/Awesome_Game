@@ -17,11 +17,13 @@ public class PlayerController : MonoBehaviour {
     public bool isMoving = false;
     public bool turnedRight = true;
     public Vector2 currentVelocity;
-    Rigidbody2D rb;
+
+
+    public Rigidbody2D rb;
+    public Transform currentCheckpoint;
 
     Gamestates gameStates = new Gamestates();
-
-    public GameObject[] currentTeam;
+    
 
 	void Start ()
     {
@@ -30,12 +32,9 @@ public class PlayerController : MonoBehaviour {
 	
 	void Update ()
     {
-
-
         if (Input.GetKeyDown(KeyCode.R))
         {
-            transform.position = GameObject.Find("Spawn").transform.position;
-            rb.velocity = Vector2.zero;
+            Respawn();
         }
         if(rb.velocity.y > 0 || rb.velocity.y < 0)
         {
@@ -65,7 +64,7 @@ public class PlayerController : MonoBehaviour {
         {
             isMoving = false;
         }
-
+        print(currentCheckpoint);
     }
 
     void FixedUpdate()
@@ -86,6 +85,20 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
+    void Respawn()
+    {
+        if(currentCheckpoint != null)
+        {
+            transform.position = currentCheckpoint.position;
+        }
+        else if(currentCheckpoint == null)
+        {
+            transform.position = GameObject.Find("Spawn").GetComponent<Transform>().position;
+        }
+        rb.velocity = Vector2.zero;
+        gameStates = Gamestates.alive;
+    }
+
     void OnCollisionEnter2D(Collision2D collision)
     {
         if(collision.collider.tag == "HostileTerrain")
@@ -95,6 +108,20 @@ public class PlayerController : MonoBehaviour {
         if(collision.collider.tag == "Terrain" && rb.velocity.y == 0)
         {
             grounded = true;
+        }
+        if(collision.collider.tag == "Player")
+        {
+            Physics2D.IgnoreCollision(collision.collider, collision.otherCollider, true);
+        }
+    }
+
+    void OnTriggerEnter(Collider c)
+    {
+        print("Triggered");
+        if(c.transform.parent.tag == "Checkpoint")
+        {
+            currentCheckpoint = c.transform;
+            print("Triggered by checkpoint");
         }
     }
 

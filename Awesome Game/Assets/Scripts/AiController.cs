@@ -4,13 +4,17 @@ using UnityEngine;
 
 public class AiController : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-		
+    GameController gameController;
+    
+
+    void Start ()
+    {
+        gameController = GameObject.Find("Game_Controller").GetComponent<GameController>();
 	}
 	
-	// Update is called once per frame
-	void Update () {
-		
+
+	void Update ()
+    {
+        
 	}
 }
